@@ -1,11 +1,14 @@
 ---
+// src/pages/news/[slug].astro
+import { env as cfEnv } from 'cloudflare:workers';
 import Base from '../../layouts/Base.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import { getArticle } from '../../lib/articles';
-const article = await getArticle(Astro.locals.runtime.env, Astro.params.slug!);
+const env = cfEnv as unknown as Env;
+const article = await getArticle(env, Astro.params.slug!);
 if (!article) return Astro.redirect('/404');
 ---
 <Base title={article.seo.title || article.title} description={article.seo.description || article.dek} schema={article.seo.schema}>
-<main class="container article-layout"><article class="article"><p class="eyebrow">{article.category}</p><h1>{article.title}</h1><p class="dek">{article.dek}</p><div class="byline">{article.author_name || '편집국'} · {article.published_at}</div><AdSlot format="inline" /><div class="article-body" set:html={article.body} /></article><aside class="sidebar"><AdSlot format="rail" /><section class="trust-box"><h2>신뢰 정책</h2><p>AI 초안은 편집 검수 후 게시되며 오류 제보는 즉시 검토합니다.</p></section></aside></main>
+<main class="container article-layout"><article class="article"><p class="eyebrow">{article.category}</p><h1>{article.title}</h1><p class="dek">{article.dek}</p><div class="byline">{article.author_name || '편집국'} · {article.published_at}</div><AdSlot format="inline" /><div class="article-body" set:html={article.body} /></article><aside class="sidebar"><AdSlot format="rail" /><section class="trust-box"><h2>정정 및 제보</h2><p>기사에 오류가 있다면 <a href="/contact">제보하기</a>를 통해 알려주세요. 확인 후 신속히 정정합니다.</p></section></aside></main>
 <script is:inline define:vars={{ id: article.id }}>navigator.sendBeacon?.('/api/view', JSON.stringify({articleId:id}));</script>
 </Base>
