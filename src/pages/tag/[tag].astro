@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { listByTag } from '../../lib/articles';
+import type { PublicArticle } from '../../lib/types';
+const tag = Astro.params.tag!;
+let articles: PublicArticle[] = [];
+try { articles = await listByTag(Astro.locals.runtime.env, tag, 30); } catch {}
+---
+<Base title={`#${tag} | TrustWire Korea`} description={`${tag} 태그 기사`}><main class="container page"><p class="eyebrow">Tag</p><h1>#{tag}</h1><section class="grid">{articles.map((article) => <ArticleCard article={article} />)}</section></main></Base>

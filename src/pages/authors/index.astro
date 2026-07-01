@@ -1,0 +1,8 @@
+---
+import Base from '../../layouts/Base.astro';
+import { listAuthors } from '../../lib/authors';
+import type { Author } from '../../lib/authors';
+let authors: Author[] = [];
+try { authors = await listAuthors(Astro.locals.runtime.env); } catch {}
+---
+<Base title="기자 및 편집진 | TrustWire Korea" description="TrustWire Korea 기자와 편집진"><main class="container page"><h1>기자 및 편집진</h1><section class="info-grid">{authors.map((author) => <a href={`/author/${author.id}`}><h2>{author.name}</h2><p>{author.bio || 'TrustWire Korea 편집진'}</p><small>{author.verified ? 'Verified' : 'Contributor'} · {author.role}</small></a>)}</section></main></Base>

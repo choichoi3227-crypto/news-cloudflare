@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { listPublished } from '../../lib/articles';
+import type { PublicArticle } from '../../lib/types';
+const category = Astro.params.category!;
+let articles: PublicArticle[] = [];
+try { articles = await listPublished(Astro.locals.runtime.env, 30, category); } catch {}
+---
+<Base title={`${category} 뉴스 | TrustWire Korea`} description={`${category} 카테고리 최신 기사`}><main class="container page"><p class="eyebrow">Category</p><h1>{category}</h1><section class="grid">{articles.map((article) => <ArticleCard article={article} />)}</section></main></Base>

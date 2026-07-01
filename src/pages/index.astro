@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { listPublished } from '../lib/articles';
+import type { PublicArticle } from '../lib/types';
+const env = Astro.locals.runtime.env;
+let articles: PublicArticle[] = [];
+try { articles = await listPublished(env, 18); } catch {}
+const [lead, ...rest] = articles;
+---
+<Base title={`${env.SITE_NAME || 'TrustWire Korea'} | 신뢰 기반 뉴스`} description="보안, SEO, 브랜드 신뢰도, 애드센스 수익화를 고려한 대규모 언론사형 뉴스 플랫폼">
+<main class="container hero"><section><p class="eyebrow">Secure Cloudflare Newsroom</p><h1>신뢰도와 수익화를 동시에 설계한 대규모 언론사 플랫폼</h1><p>Astro, TypeScript, Cloudflare D1/KV/Durable Objects 기반으로 빠른 뉴스 배포, AI 초안, SEO, 트래픽 알림, 광고 수익화를 통합합니다.</p><div class="hero-actions"><a class="button" href="/search">뉴스 검색</a><a class="button button--ghost" href="/legal/editorial-policy">편집 원칙</a></div></section><AdSlot format="rail" /></main>
+<section class="container section-head"><h2>최신 기사</h2><p>검수 완료된 기사만 게시됩니다.</p></section>
+<section class="container grid">{lead ? <ArticleCard article={lead} featured /> : <article class="card featured"><span class="kicker">System</span><h2>게시 대기 중</h2><p>관리자에서 Gemini AI 작성 도구로 첫 기사를 생성하고 검수 후 게시하세요.</p></article>}{rest.map((article) => <ArticleCard article={article} />)}</section>
+</Base>

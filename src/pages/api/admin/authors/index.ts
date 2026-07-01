@@ -1,0 +1,6 @@
+import type { APIRoute } from 'astro';
+import { listAuthors, upsertAuthor } from '../../../../lib/authors';
+import { logAdminAction } from '../../../../lib/audit';
+import { assertAdmin, clampText, json } from '../../../../lib/security';
+export const GET: APIRoute = async ({ request, locals }) => { try { assertAdmin(request, locals.runtime.env); return json({ authors: await listAuthors(locals.runtime.env) }); } catch (e) { if (e instanceof Response) return e; return json({ error: 'failed' }, { status: 500 }); } };
+export const POST: APIRoute = async ({ request, locals }) => { try { assertAdmin(request, locals.runtime.env); const body = await request.json() as { id?: string; name?: string; bio?: string; role?: string; verified?: boolean }; if (!body.name) return json({ error: 'name required' }, { status: 400 }); const author = await upsertAuthor(locals.runtime.env, { id: body.id, name: clampText(body.name, 120), bio: clampText(body.bio, 2000), role: clampText(body.role || 'editor', 50), verified: body.verified }); await logAdminAction(locals.runtime.env, 'admin', 'author.upsert', author.id, author); return json({ ok: true, author }); } catch (e) { if (e instanceof Response) return e; return json({ error: e instanceof Error ? e.message : 'failed' }, { status: 500 }); } };
