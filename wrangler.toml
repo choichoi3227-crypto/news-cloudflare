@@ -29,3 +29,18 @@ new_sqlite_classes = ["TrafficCoordinator"]
 [vars]
 SITE_NAME = "TrustWire Korea"
 GEMINI_MODEL = "gemini-2.5-flash"
+
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+persist = true
+head_sampling_rate = 1
