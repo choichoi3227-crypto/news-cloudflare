@@ -1,4 +1,5 @@
+// src/components/AdSlot.astro
 ---
 const { label = 'Advertisement', format = 'display' } = Astro.props;
 ---
-<aside class={`ad-slot ad-slot--${format}`} aria-label={label}><span>{label}</span><small>AdSense reserved area</small></aside>
+<aside class={`ad-slot ad-slot--${format}`} aria-label={label}><span>{label}</span></aside>
