@@ -1,7 +1,9 @@
 name = "news-cloudflare"
 compatibility_date = "2026-07-01"
 
-pages_build_output_dir = "./dist"
+[assets]
+binding = "SITE_ASSETS"
+directory = "./dist/client"
 
 [[d1_databases]]
 binding = "DB"
