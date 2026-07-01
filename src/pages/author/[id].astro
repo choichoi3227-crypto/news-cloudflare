@@ -1,12 +1,15 @@
 ---
+// src/pages/author/[id].astro
+import { env as cfEnv } from 'cloudflare:workers';
 import Base from '../../layouts/Base.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getAuthor } from '../../lib/authors';
 import { listByAuthor } from '../../lib/articles';
 import type { PublicArticle } from '../../lib/types';
-const author = await getAuthor(Astro.locals.runtime.env, Astro.params.id!);
+const env = cfEnv as unknown as Env;
+const author = await getAuthor(env, Astro.params.id!);
 if (!author) return Astro.redirect('/404');
 let articles: PublicArticle[] = [];
-try { articles = await listByAuthor(Astro.locals.runtime.env, author.id, 30); } catch {}
+try { articles = await listByAuthor(env, author.id, 30); } catch {}
 ---
-<Base title={`${author.name} 기자 | TrustWire Korea`} description={author.bio || `${author.name} 기자 기사 목록`}><main class="container page"><p class="eyebrow">Author</p><h1>{author.name}</h1><p>{author.bio}</p><section class="grid">{articles.map((article) => <ArticleCard article={article} />)}</section></main></Base>
+<Base title={`${author.name} 기자 | 인포100뉴스`} description={author.bio || `${author.name} 기자 기사 목록`}><main class="container page"><p class="eyebrow">Author</p><h1>{author.name}</h1><p>{author.bio}</p><section class="grid">{articles.map((article) => <ArticleCard article={article} />)}</section></main></Base>
