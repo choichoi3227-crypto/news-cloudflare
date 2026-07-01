@@ -1,9 +1,12 @@
 ---
+// src/pages/trending/index.astro
+import { env as cfEnv } from 'cloudflare:workers';
 import Base from '../../layouts/Base.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { listTrending } from '../../lib/articles';
 import type { PublicArticle } from '../../lib/types';
+const env = cfEnv as unknown as Env;
 let articles: PublicArticle[] = [];
-try { articles = await listTrending(Astro.locals.runtime.env, 30); } catch {}
+try { articles = await listTrending(env, 30); } catch {}
 ---
 <Base title="트렌딩 뉴스 | TrustWire Korea" description="조회수 기준 트렌딩 뉴스"><main class="container page"><p class="eyebrow">Trending</p><h1>트렌딩 뉴스</h1><section class="grid">{articles.map((article) => <ArticleCard article={article} />)}</section></main></Base>
