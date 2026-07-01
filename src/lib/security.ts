@@ -1,0 +1,9 @@
+export const securityHeaders = { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'permissions-policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=()', 'content-security-policy': "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://generativelanguage.googleapis.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" };
+export const json = (data: unknown, init: ResponseInit = {}) => new Response(JSON.stringify(data), { ...init, headers: { 'content-type': 'application/json; charset=utf-8', ...securityHeaders, ...(init.headers || {}) } });
+export const assertAdmin = (request: Request, env: Env) => { const token = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') || new URL(request.url).searchParams.get('token'); if (!env.ADMIN_TOKEN || token !== env.ADMIN_TOKEN) throw new Response('Unauthorized', { status: 401, headers: securityHeaders }); };
+export const slugify = (text: string) => text.toLowerCase().normalize('NFKC').replace(/[^a-z0-9가-힣]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 90);
+export const titleSlug = (title: string) => encodeURIComponent(slugify(title) || crypto.randomUUID());
+export const decodeRouteSlug = (slug: string) => { try { return decodeURIComponent(slug); } catch { return slug; } };
+export const chunkBase64 = (base64: string, size = 120_000) => Array.from({ length: Math.ceil(base64.length / size) }, (_, i) => base64.slice(i * size, (i + 1) * size));
+export const sha256Hex = async (value: string) => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value)))).map((b) => b.toString(16).padStart(2, '0')).join('');
+export const clampText = (value: unknown, max = 5000) => String(value ?? '').trim().slice(0, max);

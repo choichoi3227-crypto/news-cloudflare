@@ -1,0 +1,2 @@
+INSERT OR IGNORE INTO authors (id, name, bio, role, verified) VALUES ('editorial-ai', 'AI 보조 편집팀', 'Gemini 초안을 검수하고 게시하는 편집 계정입니다.', 'editor', 1);
+INSERT OR IGNORE INTO topic_taxonomy (id, type, name, slug, description) VALUES ('cat-tech', 'category', '테크', 'tech', '기술과 플랫폼 뉴스'), ('cat-economy', 'category', '경제', 'economy', '경제와 시장 뉴스'), ('cat-politics', 'category', '정치', 'politics', '정책과 공공 이슈');

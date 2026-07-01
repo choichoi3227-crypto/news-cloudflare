@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "wrangler pages dev dist",
+    "typecheck": "astro check",
+    "verify:slug": "node scripts/verify-slug.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@astrojs/cloudflare": "latest",
+    "astro": "latest",
+    "typescript": "latest",
+    "wrangler": "latest"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "latest"
+  }
+}

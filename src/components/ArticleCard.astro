@@ -1,0 +1,4 @@
+---
+const { article, featured = false } = Astro.props;
+---
+<article class:list={['card', { featured }]}><a href={`/news/${article.slug}`}><span class="kicker">{article.category}</span><h2>{article.title}</h2><p>{article.dek}</p><small>{article.author_name || '편집국'} · {article.views?.toLocaleString?.() || 0} views</small></a></article>

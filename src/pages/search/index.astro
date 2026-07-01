@@ -1,0 +1,10 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { searchArticles } from '../../lib/articles';
+import type { PublicArticle } from '../../lib/types';
+const q = Astro.url.searchParams.get('q') || '';
+let articles: PublicArticle[] = [];
+if (q) { try { articles = await searchArticles(Astro.locals.runtime.env, q, 30); } catch {} }
+---
+<Base title="뉴스 검색 | TrustWire Korea" description="TrustWire Korea 기사 검색"><main class="container page"><h1>뉴스 검색</h1><form class="search-form"><input name="q" value={q} placeholder="검색어 입력" /><button>검색</button></form><section class="grid">{articles.map((article) => <ArticleCard article={article} />)}</section></main></Base>
