@@ -1,11 +1,13 @@
+// src/pages/api/admin/generate.ts
+import { env as cfEnv } from 'cloudflare:workers';
 import type { APIRoute } from 'astro';
 import { generateArticle } from '../../../lib/gemini';
 import { upsertArticle } from '../../../lib/articles';
 import { assertAdmin, json } from '../../../lib/security';
 import { seoScore } from '../../../lib/seo';
+const env = cfEnv as unknown as Env;
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    const env = locals.runtime.env;
     assertAdmin(request, env);
     const { topic, angle } = await request.json() as { topic?: string; angle?: string };
     if (!topic || topic.length < 3) return json({ error: 'topic is required' }, { status: 400 });
