@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && astro build && node scripts/inject-do-export.mjs",
     "preview": "wrangler pages dev dist",
     "typecheck": "astro check",
     "verify:slug": "node scripts/verify-slug.mjs"
