@@ -1,4 +1,4 @@
-name = "news-cloudflare"
+name = "news-cloudflare-plat"
 compatibility_date = "2026-07-01"
 
 [assets]
