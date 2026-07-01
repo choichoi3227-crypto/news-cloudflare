@@ -27,7 +27,7 @@ tag = "v1"
 new_sqlite_classes = ["TrafficCoordinator"]
 
 [vars]
-SITE_NAME = "TrustWire Korea"
+SITE_NAME = "인포100뉴스"
 GEMINI_MODEL = "gemini-2.5-flash"
 
 [observability]
